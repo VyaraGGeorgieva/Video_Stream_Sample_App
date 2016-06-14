@@ -4,5 +4,8 @@
     <string name="register_link">No account yet? Create one</string>
     <string name="email">Email</string>
     <string name="pass">Password</string>
+    <string name="register">Register</string>
+    <string name="registerText"> Do you have an account already? Log in</string>
+
 
 </resources>

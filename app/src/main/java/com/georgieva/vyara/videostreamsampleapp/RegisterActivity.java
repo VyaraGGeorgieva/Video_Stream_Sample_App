@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     Intent i;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
     }
-
-    public void register(View view){
-        i = new Intent(view.getContext(), RegisterActivity.class);
+    public void logIn(View view){
+        i = new Intent(view.getContext(),LoginActivity.class);
         startActivity(i);
     }
 }

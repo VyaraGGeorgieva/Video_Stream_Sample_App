@@ -48,5 +48,6 @@
               android:layout_height="wrap_content"
               android:text="@string/register_link"
               android:gravity="center"
-              android:layout_below="@id/btn_login"/>
+              android:layout_below="@id/btn_login"
+              android:onClick="register"/>
 </RelativeLayout>
