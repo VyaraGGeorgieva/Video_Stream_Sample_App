@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Video Stream Sample App</string>
+    <string name="login">Login</string>
+    <string name="register_link">No account yet? Create one</string>
+    <string name="email">Email</string>
+    <string name="pass">Password</string>
+
 </resources>
