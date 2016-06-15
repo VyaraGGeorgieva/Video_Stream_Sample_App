@@ -18,4 +18,9 @@ public class LoginActivity extends AppCompatActivity {
         i = new Intent(view.getContext(), RegisterActivity.class);
         startActivity(i);
     }
+
+    public void playMusic(View view){
+        i = new Intent(view.getContext(), LivestreamVideoActivity.class);
+        startActivity(i);
+    }
 }
