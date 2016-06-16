@@ -8,7 +8,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.georgieva.vyara.videostreamsampleapp.LivestreamVideoActivity">
+        tools:context=".Activities.LivestreamVideoActivity">
 
         <VideoView
             android:id="@+id/videoView"
