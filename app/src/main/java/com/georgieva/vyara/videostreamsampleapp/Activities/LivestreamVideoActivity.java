@@ -21,17 +21,8 @@ public class LivestreamVideoActivity extends AppCompatActivity {
         VideoView videoView = (VideoView) findViewById(R.id.videoView);
         String httpLiveUrl = "http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8";
 
-
-
-
-        if(videoView.canSeekForward()){
-
-            if (videoView != null) {
-                videoView.setVideoURI(Uri.parse(httpLiveUrl));
-                videoView.setMediaController(new MediaController(this));
-            }
-
-        }
+        videoView.setVideoURI(Uri.parse(httpLiveUrl));
+        videoView.setMediaController(new MediaController(this));
 
         videoView.requestFocus();
         videoView.start();
