@@ -1,4 +1,4 @@
-package com.georgieva.vyara.videostreamsampleapp;
+package com.georgieva.vyara.videostreamsampleapp.Activities;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import com.georgieva.vyara.videostreamsampleapp.R;
 
 public class LivestreamVideoActivity extends AppCompatActivity {
 

@@ -1,9 +1,11 @@
-package com.georgieva.vyara.videostreamsampleapp;
+package com.georgieva.vyara.videostreamsampleapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.georgieva.vyara.videostreamsampleapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 
