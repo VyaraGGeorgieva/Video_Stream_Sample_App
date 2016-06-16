@@ -17,12 +17,21 @@
         android:gravity="center"
         tools:context=".Activities.RegisterActivity">
 
+
+        <Button
+            android:id="@+id/successBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:onClick="logIn"
+            android:visibility="invisible"/>
         <!--email-->
         <TextView
             android:id="@+id/emailRegisterTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email"/>
+            android:text="@string/email"
+            android:layout_below="@+id/successBtn"/>
 
         <EditText
             android:id="@+id/emailRegister"
@@ -56,12 +65,15 @@
             android:layout_below="@+id/passRegister"/>
 
         <TextView
+            android:id="@+id/registerTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/registerText"
             android:gravity="center"
             android:layout_below="@+id/registerBtn"
             android:onClick="logIn"/>
+
+
 
     </RelativeLayout>
 </ScrollView>
