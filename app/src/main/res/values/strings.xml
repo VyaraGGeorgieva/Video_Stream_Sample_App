@@ -6,6 +6,6 @@
     <string name="pass">Password</string>
     <string name="register">Register</string>
     <string name="registerText"> Do you have an account already? Log in</string>
-
+    <string name="confirmPass">Confirm password</string>
 
 </resources>

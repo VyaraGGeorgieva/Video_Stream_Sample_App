@@ -48,7 +48,7 @@
             android:padding="15dp"
             android:layout_below="@id/input_pass"
             android:text="@string/login"
-            android:onClick="playMusic"/>
+            android:onClick="getUser"/>
 
         <TextView android:id="@+id/link_signup"
                   android:layout_width="fill_parent"
