@@ -6,10 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.georgieva.vyara.videostreamsampleapp.Models.User;
 import com.georgieva.vyara.videostreamsampleapp.R;
-import com.georgieva.vyara.videostreamsampleapp.RetrofitObjectAPI;
+import com.georgieva.vyara.videostreamsampleapp.RetrofitGet;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -38,19 +39,24 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void playMusic(View view) {
-//        i = new Intent(view.getContext(), LivestreamVideoActivity.class);
-//        startActivity(i);
-        getUser();
+
+
+    public void playVideo() {
+//        String emailLogIn = input_email.getText().toString();
+//        String passwordLogIn = input_pass.getText().toString();
+//        Log.d(emailLogIn,passwordLogIn);
+        i = new Intent(getApplicationContext(), LivestreamVideoActivity.class);
+        startActivity(i);
+
     }
 
-    private void getUser() {
+    public void getUser(View view) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        RetrofitObjectAPI service = retrofit.create(RetrofitObjectAPI.class);
+        RetrofitGet service = retrofit.create(RetrofitGet.class);
 
         Call<User> call = service.getUserDetails();
 
@@ -59,17 +65,24 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Response<User> response, Retrofit retrofit) {
 
                 try {
-
-                    input_email.setText(response.body().getEmail());
-                    input_pass.setText(response.body().getPassword());
+                    if(input_email.getText().toString().equals("newuser@gmail.com")
+                            && input_pass.getText().toString().equals("password")){
+                        Toast.makeText(getApplicationContext(), "You have successfully logged in",
+                                Toast
+                                .LENGTH_LONG).show();
+                        playVideo();
+                    } else{
+                        Toast.makeText(getApplicationContext(), "Wrong credentials, try again",
+                                Toast
+                                        .LENGTH_LONG).show();
+                    }
 
 
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
                     e.printStackTrace();
                 }
-
-            }
+          }
 
             @Override
             public void onFailure(Throwable t) {
