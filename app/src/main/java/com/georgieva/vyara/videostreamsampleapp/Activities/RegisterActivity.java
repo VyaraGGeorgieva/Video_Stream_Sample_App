@@ -10,16 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.georgieva.vyara.videostreamsampleapp.Models.User;
 import com.georgieva.vyara.videostreamsampleapp.R;
-import com.georgieva.vyara.videostreamsampleapp.RetrofitPost;
 import com.georgieva.vyara.videostreamsampleapp.Utility;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import cz.msebera.android.httpclient.Header;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -52,10 +49,20 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passRegister.getText().toString();
         String confirmPass = confirmPassRegister.getText().toString();
 
+        RequestParams params = new RequestParams();
         if(Utility.isNotNull(email) && Utility.isNotNull(password)&& Utility.isNotNull(confirmPass)) {
             if (password.equals(confirmPass)) {
                 if (Utility.validate(email)) {
-                    postUser();
+
+                    // Put Http parameter name with value of Name Edit View control
+                    params.put("confirmPass", confirmPass);
+                    // Put Http parameter username with value of Email Edit View control
+                    params.put("username", email);
+                    // Put Http parameter password with value of Password Edit View control
+                    params.put("password", password);
+                    // Invoke RESTful Web Service with Http parameters
+
+                    postUser(params);
                     //String email =  emailRegister.getText().toString();
                     //String password = passRegister.getText().toString();
                     Log.d("email", email);
@@ -83,30 +90,20 @@ public class RegisterActivity extends AppCompatActivity {
 //        i = new Intent(RegisterActivity.this,LoginActivity.class);
 //        startActivity(i);
 //    }
-    private void postUser() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(url)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private void postUser(final RequestParams params) {
 
-        RetrofitPost service = retrofit.create(RetrofitPost.class);
-
-
-
-        Call<User> call = service.postUserDetails("passowrd","email");
-
-        call.enqueue(new Callback<User>() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, params, new AsyncHttpResponseHandler() {
             @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                Log.d("onFailure", t.toString());
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
+
             }
-
-
         });
 
     }
