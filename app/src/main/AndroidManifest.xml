@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.LoginActivity"
+                  android:windowSoftInputMode="stateHidden"
                   android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,9 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.RegisterActivity"
+                  android:windowSoftInputMode="stateHidden"
                   android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity android:name=".Activities.LivestreamVideoActivity"
+                  android:windowSoftInputMode="stateHidden"
                   android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
     </application>
