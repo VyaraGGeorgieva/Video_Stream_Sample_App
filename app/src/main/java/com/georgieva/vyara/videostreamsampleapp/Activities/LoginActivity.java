@@ -24,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     String url = "http://www.mocky.io/";
     EditText input_email;
     EditText input_pass;
+    private static int counterLogin = 0;
+    private static int counterRegister = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
+        counterRegister ++;
         i = new Intent(view.getContext(), RegisterActivity.class);
         startActivity(i);
     }
@@ -42,15 +45,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void playVideo() {
-//        String emailLogIn = input_email.getText().toString();
-//        String passwordLogIn = input_pass.getText().toString();
-//        Log.d(emailLogIn,passwordLogIn);
         i = new Intent(getApplicationContext(), LivestreamVideoActivity.class);
         startActivity(i);
 
     }
 
     public void getUser(View view) {
+        counterLogin++;
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -65,18 +67,24 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Response<User> response, Retrofit retrofit) {
 
                 try {
-                    if(input_email.getText().toString().equals("newuser@gmail.com")
-                            && input_pass.getText().toString().equals("password")){
-                        Toast.makeText(getApplicationContext(), "You have successfully logged in",
-                                Toast
-                                .LENGTH_LONG).show();
-                        playVideo();
+                    if(counterLogin>1 && counterRegister>=1) {
+                        if (input_email.getText().toString().equals("newuser@gmail.com")
+                                && input_pass.getText().toString().equals("password")) {
+                            Toast.makeText(getApplicationContext(), "You have successfully logged in",
+                                    Toast
+                                            .LENGTH_LONG).show();
+                            playVideo();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Wrong credentials, try again",
+                                    Toast
+                                            .LENGTH_LONG).show();
+                        }
                     } else{
-                        Toast.makeText(getApplicationContext(), "Wrong credentials, try again",
+                        Toast.makeText(getApplicationContext(), "no such user exists, register " +
+                                "first",
                                 Toast
                                         .LENGTH_LONG).show();
                     }
-
 
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
