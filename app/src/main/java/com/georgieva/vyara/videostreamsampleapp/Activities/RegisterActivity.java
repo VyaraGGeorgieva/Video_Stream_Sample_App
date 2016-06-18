@@ -14,7 +14,6 @@ import com.georgieva.vyara.videostreamsampleapp.Models.User;
 import com.georgieva.vyara.videostreamsampleapp.R;
 import com.georgieva.vyara.videostreamsampleapp.RetrofitPost;
 import com.georgieva.vyara.videostreamsampleapp.Utility;
-import com.loopj.android.http.AsyncHttpClient;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -33,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
     TextView registerTV;
     String url = "http://www.mocky.io/";
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
 
 
     @Override
