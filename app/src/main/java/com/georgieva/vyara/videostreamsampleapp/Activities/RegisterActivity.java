@@ -1,27 +1,26 @@
 package com.georgieva.vyara.videostreamsampleapp.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.georgieva.vyara.videostreamsampleapp.Models.User;
 import com.georgieva.vyara.videostreamsampleapp.R;
+import com.georgieva.vyara.videostreamsampleapp.RetrofitPost;
 import com.georgieva.vyara.videostreamsampleapp.Utility;
 import com.loopj.android.http.AsyncHttpClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button successBtn;
     Button registerBtn;
     TextView registerTV;
-    String url = "http://www.mocky.io/v2/5762c5e8100000c11f8b14dc";
+    String url = "http://www.mocky.io/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -52,89 +51,68 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
-        String email = emailRegister.getText().toString();
-        String password = passRegister.getText().toString();
-        String confirmPass = confirmPassRegister.getText().toString();
-
-        if (Utility.isNotNull(email) && Utility.isNotNull(password) && Utility.isNotNull(confirmPass)) {
-            if (password.equals(confirmPass)) {
-                if (Utility.validate(email)) {
-
-
-                    postUser();
-
-                    if(email.equals("newuser@gmail.com")&& password.equals("password")) {
-                        registerBtn.setVisibility(View.INVISIBLE);
-                        registerTV.setVisibility(View.INVISIBLE);
-                        successBtn.setVisibility(View.VISIBLE);
-                        successBtn.setText("Successfully registered. Log in");
-                    } else{
-                        Toast.makeText(getApplicationContext(), "Please use the credentials you " +
-                                "were provided with", Toast.LENGTH_LONG).show();
-                    }
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), "The passwords are not the same", Toast
-                        .LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please fill in all of the fields", Toast
-                    .LENGTH_LONG).show();
-        }
-
+        postUser();
     }
 
     public void postUser() {
 
-        new AsyncTask<String, String, String>() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RetrofitPost service = retrofit.create(RetrofitPost.class);
+
+        Call<User> call = service.postUserDetails("password", "email");
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Response<User> response, Retrofit retrofit) {
+                //what I was trying to implement here, was posting the credentials in the body of
+                // the request. However, could not come up with a proper way of achieving it, so,
+                // it's only a set of validations
+
+                String email = emailRegister.getText().toString();
+                String password = passRegister.getText().toString();
+                String confirmPass = confirmPassRegister.getText().toString();
+
+                //don't let the user pass without filling in the form
+                if (Utility.isNotNull(email) && Utility.isNotNull(password) && Utility.isNotNull(confirmPass)) {
+                    //validate length of the password
+                    if (password.length() >= 5) {
+                        //check if passwords match
+                        if (password.equals(confirmPass)) {
+                            //check email's validity
+                            if (Utility.validate(email)) {
+                                registerBtn.setVisibility(View.INVISIBLE);
+                                registerTV.setVisibility(View.INVISIBLE);
+                                successBtn.setVisibility(View.VISIBLE);
+                                successBtn.setText(R.string.successfullyRegistered);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "The passwords are not the same", Toast
+                                    .LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "The password must be at least 5 symbols " +
+                                "long", Toast
+                                .LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please fill in all of the fields", Toast
+                            .LENGTH_LONG).show();
+                }
+
+            }
 
             @Override
-            protected String doInBackground(String... params) {
-                try {
-                    String response = makePostRequest(url,
-                            "{ email: \"newuser@gmail.com\", password: \"password\" }",
-                            getApplicationContext());
-                    return "Success";
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    return "";
-                }
+            public void onFailure(Throwable t) {
+                Log.d("onFailure", t.toString());
             }
-        }.execute("");
-    }
-
-
-
-    @NonNull
-    public static String makePostRequest(String stringUrl, String payload,
-                                         Context context) throws IOException {
-        URL url = new URL(stringUrl);
-        HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-        String line;
-        StringBuilder jsonString = new StringBuilder();
-
-        uc.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        uc.setRequestMethod("POST");
-        uc.setDoInput(true);
-        uc.setInstanceFollowRedirects(false);
-        uc.connect();
-        OutputStreamWriter writer = new OutputStreamWriter(uc.getOutputStream(), "UTF-8");
-        writer.write(payload);
-        writer.close();
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-            while((line = br.readLine()) != null){
-                jsonString.append(line);
-            }
-            br.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        uc.disconnect();
-        return jsonString.toString();
+        });
     }
 
     public void logIn(View view) {
@@ -142,7 +120,3 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(i);
             }
 }
-
-
-
-
