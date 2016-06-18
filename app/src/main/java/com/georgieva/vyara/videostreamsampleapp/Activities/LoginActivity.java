@@ -43,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-
-
     public void playVideo() {
         i = new Intent(getApplicationContext(), LivestreamVideoActivity.class);
         startActivity(i);
@@ -68,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 String email = input_email.getText().toString();
                 String password = input_pass.getText().toString();
+
                 //predefined credentials
                 String emailPredef = response.body().getEmail();
                 String passwordPredef = response.body().getPassword();
