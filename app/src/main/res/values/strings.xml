@@ -7,5 +7,6 @@
     <string name="register">Register</string>
     <string name="registerText"> Do you have an account already? Log in</string>
     <string name="confirmPass">Confirm password</string>
+    <string name="successfullyRegistered">Successfully registered. Log in</string>
 
 </resources>
