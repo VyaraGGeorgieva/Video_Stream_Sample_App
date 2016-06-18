@@ -12,10 +12,6 @@ import retrofit.http.POST;
  */
 public interface RetrofitPost {
 
-    /*
-     * Retrofit get annotation with our URL
-     * And our method that will return us details of student.
-    */
     @FormUrlEncoded
     @POST("v2/5762ccb210000095208b14e2")
     Call<User> postUserDetails(
