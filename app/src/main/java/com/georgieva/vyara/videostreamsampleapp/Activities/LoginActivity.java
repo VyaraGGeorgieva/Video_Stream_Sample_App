@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.georgieva.vyara.videostreamsampleapp.Models.User;
 import com.georgieva.vyara.videostreamsampleapp.R;
 import com.georgieva.vyara.videostreamsampleapp.RetrofitGet;
+import com.georgieva.vyara.videostreamsampleapp.Utility;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -47,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     public void playVideo() {
         i = new Intent(getApplicationContext(), LivestreamVideoActivity.class);
         startActivity(i);
-
     }
 
     public void getUser(View view) {
@@ -66,25 +66,40 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {
 
+                String email = input_email.getText().toString();
+                String password = input_pass.getText().toString();
+                //predefined credentials
+                String emailPredef = response.body().getEmail();
+                String passwordPredef = response.body().getPassword();
+
                 try {
-                    if(counterLogin>1 && counterRegister>=1) {
-                        if (input_email.getText().toString().equals("newuser@gmail.com")
-                                && input_pass.getText().toString().equals("password")) {
-                            Toast.makeText(getApplicationContext(), "You have successfully logged in",
-                                    Toast
-                                            .LENGTH_LONG).show();
-                            playVideo();
+                    //force the user fill in the form
+                    if (Utility.isNotNull(email) && Utility.isNotNull(password)) {
+                        //force the user to register first
+                        if (counterLogin >= 1 && counterRegister >= 1) {
+                            //check for predefined credentials
+                            if (email.equals(emailPredef) && password.equals(passwordPredef)) {
+                                Toast.makeText(getApplicationContext(), "You have successfully logged in",
+                                        Toast
+                                                .LENGTH_SHORT).show();
+                                playVideo();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Wrong credentials, try again",
+                                        Toast
+                                                .LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(getApplicationContext(), "Wrong credentials, try again",
+                            Toast.makeText(getApplicationContext(), "No such user exists, register " +
+                                            "please",
                                     Toast
-                                            .LENGTH_LONG).show();
+                                            .LENGTH_SHORT).show();
                         }
-                    } else{
-                        Toast.makeText(getApplicationContext(), "no such user exists, register " +
-                                "first",
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Please, fill in all of the " +
+                                "fields",
                                 Toast
-                                        .LENGTH_LONG).show();
-                    }
+                                        .LENGTH_SHORT).show();
+                }
 
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
@@ -96,8 +111,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 Log.d("onFailure", t.toString());
             }
-
-
         });
     }
 }
